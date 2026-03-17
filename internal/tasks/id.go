@@ -13,6 +13,7 @@ type ID string
 // does not fill in holes
 // reuses ID if max is deleted (lowk feel like that's ok)
 func genNextID(existing []ID) ID {
+	// find max
 	max := int64(0)
 	for _, id := range existing {
 		n, _ := strconv.ParseInt(string(id), 36, 64)
@@ -20,6 +21,8 @@ func genNextID(existing []ID) ID {
 			max = n
 		}
 	}
+
+	// format max in base 36
 	return ID(fmt.Sprintf("%04s", strconv.FormatInt(max+1, 36)))
 }
 

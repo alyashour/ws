@@ -9,6 +9,8 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+// DEFAULT PATH FOR STORAGE IS ~/.ws/data/tasks/default.yaml
+
 var dataDir = defaultDataDir()
 
 func defaultDataDir() string {
@@ -21,7 +23,7 @@ func SetDataDir(path string) {
 }
 
 func taskFilePath() string {
-	return filepath.Join(dataDir, "tasks", "tasks.yaml")
+	return filepath.Join(dataDir, "tasks", "default.yaml")
 }
 
 func save(tf TaskFile) error {
