@@ -3,6 +3,7 @@ package tasks
 import (
 	"errors"
 	"fmt"
+	"path/filepath"
 	"time"
 
 	"github.com/alyashour/ws/internal/config"
@@ -30,7 +31,7 @@ func Run(cfg config.Ws, args []string) {
 		text := args[1]
 
 		// add
-		task, err := Add(text)
+		task, err := Add(text, filepath.Join(cfg.GetDefaultTaskFilePath()))
 
 		// print
 		if err == nil {
@@ -45,7 +46,7 @@ func Run(cfg config.Ws, args []string) {
 		}
 
 		// get list
-		tasks, err := List()
+		tasks, err := List(cfg.GetDefaultTaskFilePath())
 		if err != nil {
 			fmt.Printf("Err: %s\n", err)
 		}
@@ -67,7 +68,7 @@ func Run(cfg config.Ws, args []string) {
 		id := normalizeID(args[1])
 
 		// check as done
-		task, err := Done(id)
+		task, err := Done(cfg.GetDefaultTaskFilePath(), id)
 		if err != nil {
 			fmt.Printf("Err: %s\n", err)
 		}
@@ -83,7 +84,7 @@ func Run(cfg config.Ws, args []string) {
 		id := normalizeID(args[1])
 		text := args[2]
 
-		task, err := Edit(id, text)
+		task, err := Edit(cfg.GetDefaultTaskFilePath(), id, text)
 		if err != nil {
 			fmt.Printf("Err: %s\n", err)
 		}
@@ -98,7 +99,7 @@ func Run(cfg config.Ws, args []string) {
 		// parse args
 		id := normalizeID(args[1])
 
-		task, err := Remove(id)
+		task, err := Remove(cfg.GetDefaultTaskFilePath(), id)
 		if err != nil {
 			fmt.Printf("Err: %s\n", err)
 			return
@@ -112,9 +113,10 @@ func Run(cfg config.Ws, args []string) {
 }
 
 // Load tasks from file, add new, and save to file
-func Add(text string) (Task, error) {
+// Needs the path of the taskfile (.yaml) file
+func Add(text string, taskFilePath string) (Task, error) {
 	// first load the tasks from taskfile
-	tf, err := load()
+	tf, err := load(taskFilePath)
 	if err != nil {
 		return Task{}, err
 	}
@@ -133,12 +135,12 @@ func Add(text string) (Task, error) {
 	tf.Tasks = append(tf.Tasks, task)
 
 	// save the taskfile
-	return task, save(tf)
+	return task, save(tf, taskFilePath)
 }
 
-func List() ([]Task, error) {
+func List(taskFilePath string) ([]Task, error) {
 	// load the tf
-	tf, err := load()
+	tf, err := load(taskFilePath)
 	if err != nil {
 		return nil, err
 	}
@@ -147,9 +149,9 @@ func List() ([]Task, error) {
 	return tf.Tasks, nil
 }
 
-func Done(id ID) (Task, error) {
+func Done(taskFilePath string, id ID) (Task, error) {
 	// load the tf
-	tf, err := load()
+	tf, err := load(taskFilePath)
 	if err != nil {
 		return Task{}, err
 	}
@@ -167,13 +169,13 @@ func Done(id ID) (Task, error) {
 	tf.Tasks[i].Done = true
 
 	// save it
-	return tf.Tasks[i], save(tf)
+	return tf.Tasks[i], save(tf, taskFilePath)
 }
 
 // Only supports changing the text as of now
-func Edit(id ID, text string) (Task, error) {
+func Edit(taskFilePath string, id ID, text string) (Task, error) {
 	// load the tf
-	tf, err := load()
+	tf, err := load(taskFilePath)
 	if err != nil {
 		return Task{}, err
 	}
@@ -191,12 +193,12 @@ func Edit(id ID, text string) (Task, error) {
 	tf.Tasks[i].Text = text
 
 	// save
-	return tf.Tasks[i], save(tf)
+	return tf.Tasks[i], save(tf, taskFilePath)
 }
 
-func Remove(id ID) (Task, error) {
+func Remove(taskFilePath string, id ID) (Task, error) {
 	// load the tf
-	tf, err := load()
+	tf, err := load(taskFilePath)
 	if err != nil {
 		return Task{}, err
 	}
@@ -208,7 +210,7 @@ func Remove(id ID) (Task, error) {
 			tf.Tasks = append(tf.Tasks[:i], tf.Tasks[i+1:]...)
 
 			// save tf
-			return t, save(tf)
+			return t, save(tf, taskFilePath)
 		}
 	}
 

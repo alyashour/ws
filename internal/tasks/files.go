@@ -9,26 +9,9 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// DEFAULT PATH FOR STORAGE IS ~/.ws/data/tasks/default.yaml
-
-var dataDir = defaultDataDir()
-
-func defaultDataDir() string {
-	home, _ := os.UserHomeDir()
-	return filepath.Join(home, ".ws", "data")
-}
-
-func SetDataDir(path string) {
-	dataDir = path
-}
-
-func taskFilePath() string {
-	return filepath.Join(dataDir, "tasks", "default.yaml")
-}
-
-func save(tf TaskFile) error {
+func save(tf TaskFile, path string) error {
 	// make if not already made
-	if err := os.MkdirAll(filepath.Dir(taskFilePath()), 0755); err != nil {
+	if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
 		return err
 	}
 
@@ -36,14 +19,15 @@ func save(tf TaskFile) error {
 	if err != nil {
 		return err
 	}
-	return os.WriteFile(taskFilePath(), data, 0644)
+	return os.WriteFile(path, data, 0644)
 }
 
-func load() (TaskFile, error) {
+// Loads a taskfile from memory (yaml) file
+func load(path string) (TaskFile, error) {
 	var tf TaskFile
 
 	// read file
-	data, err := os.ReadFile(taskFilePath())
+	data, err := os.ReadFile(path)
 
 	// 3 cases:
 	// 1. file does not exist yet

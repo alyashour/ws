@@ -2,13 +2,18 @@ package tasks
 
 import (
 	"testing"
+
+	"github.com/alyashour/ws/internal/config"
 )
 
 func TestAdd(t *testing.T) {
-	SetDataDir(t.TempDir())
+	var ws = config.Ws{
+		ConfPath:      t.TempDir(),
+		RemoteKeyPath: "~/.ssh/id_ed25519",
+	}
 
 	// Add to TaskFile
-	task, err := Add("fix the bug")
+	task, err := Add("fix the bug", ws.GetDefaultTaskFilePath())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -17,7 +22,7 @@ func TestAdd(t *testing.T) {
 	}
 
 	// Load from TaskFile and ensure it's identical
-	tf, err := load()
+	tf, err := load(ws.GetDefaultTaskFilePath())
 	idx, loadedTask := tf.find(task.Id)
 	if idx == -1 {
 		if loadedTask != task {
@@ -27,10 +32,13 @@ func TestAdd(t *testing.T) {
 }
 
 func TestList(t *testing.T) {
-	SetDataDir(t.TempDir())
+	var ws = config.Ws{
+		ConfPath:      t.TempDir(),
+		RemoteKeyPath: "~/.ssh/id_ed25519",
+	}
 
 	// list empty
-	tasks, err := List()
+	tasks, err := List(ws.GetDefaultTaskFilePath())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -39,10 +47,10 @@ func TestList(t *testing.T) {
 	}
 
 	// add some tasks then list
-	Add("fix the bug")
-	Add("write tests")
+	Add("fix the bug", ws.GetDefaultTaskFilePath())
+	Add("write tests", ws.GetDefaultTaskFilePath())
 
-	tasks, err = List()
+	tasks, err = List(ws.GetDefaultTaskFilePath())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -52,14 +60,17 @@ func TestList(t *testing.T) {
 }
 
 func TestDone(t *testing.T) {
-	SetDataDir(t.TempDir())
+	var ws = config.Ws{
+		ConfPath:      t.TempDir(),
+		RemoteKeyPath: "~/.ssh/id_ed25519",
+	}
 
-	task, err := Add("fix the bug")
+	task, err := Add("fix the bug", ws.GetDefaultTaskFilePath())
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	done, err := Done(task.Id)
+	done, err := Done(ws.GetDefaultTaskFilePath(), task.Id)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -68,7 +79,7 @@ func TestDone(t *testing.T) {
 	}
 
 	// verify persisted
-	tf, _ := load()
+	tf, _ := load(ws.GetDefaultTaskFilePath())
 	_, loaded := tf.find(task.Id)
 	if !loaded.Done {
 		t.Errorf("done not persisted to file")
@@ -76,20 +87,23 @@ func TestDone(t *testing.T) {
 }
 
 func TestRemove(t *testing.T) {
-	SetDataDir(t.TempDir())
+	var ws = config.Ws{
+		ConfPath:      t.TempDir(),
+		RemoteKeyPath: "~/.ssh/id_ed25519",
+	}
 
-	task, err := Add("fix the bug")
+	task, err := Add("fix the bug", ws.GetDefaultTaskFilePath())
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	_, err = Remove(task.Id)
+	_, err = Remove(ws.GetDefaultTaskFilePath(), task.Id)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	// verify removed from file
-	tf, _ := load()
+	tf, _ := load(ws.GetDefaultTaskFilePath())
 	idx, _ := tf.find(task.Id)
 	if idx != -1 {
 		t.Errorf("expected task to be removed, still found at index %d", idx)
@@ -97,14 +111,17 @@ func TestRemove(t *testing.T) {
 }
 
 func TestEdit(t *testing.T) {
-	SetDataDir(t.TempDir())
+	var ws = config.Ws{
+		ConfPath:      t.TempDir(),
+		RemoteKeyPath: "~/.ssh/id_ed25519",
+	}
 
-	task, err := Add("fix the bug")
+	task, err := Add("fix the bug", ws.GetDefaultTaskFilePath())
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	updated, err := Edit(task.Id, "fix the other bug")
+	updated, err := Edit(ws.GetDefaultTaskFilePath(), task.Id, "fix the other bug")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -113,7 +130,7 @@ func TestEdit(t *testing.T) {
 	}
 
 	// verify persisted
-	tf, _ := load()
+	tf, _ := load(ws.GetDefaultTaskFilePath())
 	_, loaded := tf.find(task.Id)
 	if loaded.Text != "fix the other bug" {
 		t.Errorf("edit not persisted to file")
