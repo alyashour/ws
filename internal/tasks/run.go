@@ -106,6 +106,8 @@ func Run(cfg config.Ws, args []string) {
 		}
 
 		fmt.Printf("Removed task %s\n", task)
+	case "path":
+		fmt.Println("Path:", cfg.GetDefaultTaskFilePath())
 	default:
 		fmt.Println("Uknown verb:", args[0])
 		usage()
@@ -222,6 +224,7 @@ func usage() {
 	fmt.Println("Usage: ws todo <verb>")
 	fmt.Println(`
 Verbs:
+- path
 - add/new
 - list/ls
 - done

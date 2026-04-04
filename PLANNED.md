@@ -52,7 +52,7 @@ This is the counterpart to CHANGELOG.md
     - `ws task reset -f/--force`
 - Improve help menus
 
-## [0.1.1] Sync commands
+## [0.1.1] Sync commands and QOL
 
 ### Added
 - `ws sync init`
@@ -60,3 +60,6 @@ This is the counterpart to CHANGELOG.md
 - `ws sync clone <url>`
 - `ws sync pull [--hard]`
 - `ws sync push [-f]`
+
+Also for tasks
+- `ws todo path`. Prints the todo lists current path.
