@@ -55,6 +55,8 @@ This is the counterpart to CHANGELOG.md
 ## [0.1.1] Sync commands
 
 ### Added
-Both of these fail on any conflicts unless --hard or -f is present.
-- `ws pull [--hard]`
-- `ws push [-f]`
+- `ws sync init`
+- `ws sync status`. Prints the data path, checks if dir exists, if repo exists, then runs `git status`
+- `ws sync clone <url>`
+- `ws sync pull [--hard]`
+- `ws sync push [-f]`

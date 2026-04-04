@@ -4,13 +4,15 @@ import (
 	"errors"
 	"fmt"
 	"time"
+
+	"github.com/alyashour/ws/internal/config"
 )
 
 var TaskNotFoundErr = errors.New("task not found")
 
 // Function responsible for running todo commands
 // Parses arguments and performs action
-func Run(args []string) {
+func Run(cfg config.Ws, args []string) {
 	// if no verb was given
 	if len(args) == 0 {
 		usage()
