@@ -10,21 +10,22 @@ import (
 func Run(cfg config.Ws, args []string) {
 	if len(args) == 0 {
 		usage()
+		return
 	}
 
 	switch strings.ToLower(args[0]) {
 	case "init":
-		if err := initRepo(cfg.GetDataPath()); err != nil {
+		if err := initSync(cfg); err != nil {
 			fmt.Println("Err:", err)
 		}
 	case "clone":
 		fmt.Println("Not yet implemented")
 	case "pull":
-		if err := pull(cfg.GetDataPath()); err != nil {
+		if err := pull(cfg.GetDataPath(), cfg.ConfPath); err != nil {
 			fmt.Println("Failed to pull from remote. Err:", err)
 		}
 	case "push":
-		if err := push(cfg.GetDataPath(), cfg.RemoteKeyPath); err != nil {
+		if err := push(cfg.GetDataPath(), cfg.ConfPath); err != nil {
 			fmt.Println("Failed to push to remote. Err:", err)
 		}
 	case "status":
@@ -82,5 +83,6 @@ Verbs:
 - init		Initializes a new repository
 - clone		Clones an existing repository
 - pull		Pull from remote
-- push		Push to remote`)
+- push		Push to remote
+- status    Get status`)
 }

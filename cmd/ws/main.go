@@ -11,8 +11,8 @@ import (
 )
 
 var ws = config.Ws{
-	ConfPath:      "/tmp/.ws/",
-	RemoteKeyPath: "~/.ssh/id_ed25519",
+	ConfPath:            "/tmp/.ws/",
+	DefaultTaskFileName: "default.yaml",
 }
 
 func main() {
