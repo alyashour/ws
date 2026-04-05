@@ -37,18 +37,20 @@ This is the counterpart to CHANGELOG.md
 
 ---
 
-## [0.1.3] Tasks upgrades
+## [0.1.4] Tasks upgrades
 - Add notifications
     - `ws task notif <id> <notif time>`
     - `ws task notifs` and `ws notifs`
 
 ---
 
-## [0.1.2] Customization and QOL
+## [0.1.3] Customization and QOL
 - Add path config
     - `ws tasks path -l/--list`
     - `ws tasks path -n/--new <new path>`
 - Add easy reset
     - `ws task reset -f/--force`
-- Improve help menus
+- Improve help menus (both dev user and dev experience)
+- Add `ws --version\-v`
+- Clean up code TODOs
 

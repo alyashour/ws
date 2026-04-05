@@ -5,6 +5,9 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 See PLANNED.md for future releases.
 
+## [0.1.2] Move ws binary to project root.
+- Installation is now `github.com/alyashour/ws@latest` instead of `.../ws/cmd/ws@latest`.
+
 ## [0.1.1] Sync commands and QOL
 
 ### Added

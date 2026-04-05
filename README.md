@@ -2,46 +2,35 @@
 
 A personal engineering workspace CLI. Centralizes projects, todos, journal entries, and notes into a single git-trackable data store.
 
----
-
 ## Philosophy
 
-- **Files are the source of truth.** Everything lives in `data/` as human-readable YAML.
-- **Git is the backup.** The entire `data/` directory is designed to be committed and synced across machines.
-- **One binary.** `ws` is a single compiled binary with no runtime dependencies.
-
----
+- **Files are the source of truth.** Everything lives in `data/` as human-readable YAML. Edit what you want, write what you want. Nothing breaks ws.
+- **Git is the backup.** The sync system is just git. Write, edit, and branch commits as you need.
 
 ## Installation
 
-```bash
-git clone https://github.com/you/ws
-cd ws
-go build -o ws ./cmd/ws
-mv ws /usr/local/bin/ws
-```
-
----
+Install the tool with `go install github.com/alyashour/ws@latest`.
 
 ## Data layout
 
 ```
 ~/.ws/data/
-├── projects/
-│   └── <id>.yaml
 ├── todos/
 │   └── personal.yaml
+# UNIMPLEMENTED (WIP)
+├── projects/
+│   └── <id>.yaml
 ├── notes/
 │   └── <slug>.yaml
 └── journal/
     └── <date>.yaml
 ```
 
----
-
 ## Usage
 
 ### Todos
+
+See help menu for what's been implemented!
 
 ```bash
 ws todo add "text"               # add a new todo
@@ -91,7 +80,8 @@ ws api install-service           # write systemd/launchd config
 ### Sync
 
 ```bash
-ws sync                          # git pull + push on data/
+ws sync init
+ws sync pull/push                          # git pull + push on data/
 ```
 
 ---
