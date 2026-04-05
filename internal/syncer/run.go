@@ -21,11 +21,11 @@ func Run(cfg config.Ws, args []string) {
 		fmt.Println("Not yet implemented")
 	case "pull":
 		if err := pull(cfg.GetDataPath()); err != nil {
-			fmt.Println("Err:", err)
+			fmt.Println("Failed to pull from remote. Err:", err)
 		}
 	case "push":
 		if err := push(cfg.GetDataPath(), cfg.RemoteKeyPath); err != nil {
-			fmt.Println("Err:", err)
+			fmt.Println("Failed to push to remote. Err:", err)
 		}
 	case "status":
 		status(cfg.GetDataPath())
