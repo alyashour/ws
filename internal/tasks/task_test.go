@@ -8,8 +8,7 @@ import (
 
 func TestAdd(t *testing.T) {
 	var ws = config.Ws{
-		ConfPath:      t.TempDir(),
-		RemoteKeyPath: "~/.ssh/id_ed25519",
+		ConfPath: t.TempDir(),
 	}
 
 	// Add to TaskFile
@@ -33,8 +32,7 @@ func TestAdd(t *testing.T) {
 
 func TestList(t *testing.T) {
 	var ws = config.Ws{
-		ConfPath:      t.TempDir(),
-		RemoteKeyPath: "~/.ssh/id_ed25519",
+		ConfPath: t.TempDir(),
 	}
 
 	// list empty
@@ -61,8 +59,7 @@ func TestList(t *testing.T) {
 
 func TestDone(t *testing.T) {
 	var ws = config.Ws{
-		ConfPath:      t.TempDir(),
-		RemoteKeyPath: "~/.ssh/id_ed25519",
+		ConfPath: t.TempDir(),
 	}
 
 	task, err := Add("fix the bug", ws.GetDefaultTaskFilePath())
@@ -88,8 +85,7 @@ func TestDone(t *testing.T) {
 
 func TestRemove(t *testing.T) {
 	var ws = config.Ws{
-		ConfPath:      t.TempDir(),
-		RemoteKeyPath: "~/.ssh/id_ed25519",
+		ConfPath: t.TempDir(),
 	}
 
 	task, err := Add("fix the bug", ws.GetDefaultTaskFilePath())
@@ -112,8 +108,7 @@ func TestRemove(t *testing.T) {
 
 func TestEdit(t *testing.T) {
 	var ws = config.Ws{
-		ConfPath:      t.TempDir(),
-		RemoteKeyPath: "~/.ssh/id_ed25519",
+		ConfPath: t.TempDir(),
 	}
 
 	task, err := Add("fix the bug", ws.GetDefaultTaskFilePath())

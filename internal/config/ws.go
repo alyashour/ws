@@ -5,7 +5,6 @@ import "path/filepath"
 type Ws struct {
 	ConfPath            string
 	DefaultTaskFileName string
-	RemoteKeyPath       string
 }
 
 func (ws *Ws) GetDataPath() string {

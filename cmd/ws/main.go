@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/alyashour/ws/internal/config"
@@ -10,12 +11,19 @@ import (
 	"github.com/alyashour/ws/internal/tasks"
 )
 
-var ws = config.Ws{
-	ConfPath:            "/tmp/.ws/",
-	DefaultTaskFileName: "default.yaml",
-}
-
 func main() {
+	// init ws
+	homedir, err := os.UserHomeDir()
+	if err != nil {
+		fmt.Println("Failed to initialize ws. UserHomeDir could not be determined. Please submit a bug report with your OS.")
+		return
+	}
+
+	var ws = config.Ws{
+		ConfPath:            filepath.Join(homedir, ".ws"),
+		DefaultTaskFileName: "default.yaml",
+	}
+
 	if len(os.Args) == 1 {
 		usage()
 		return
